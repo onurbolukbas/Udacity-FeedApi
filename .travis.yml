@@ -1,0 +1,32 @@
+language: node_js
+node_js:
+  - 13
+
+services:
+  - docker
+
+# Pre-testing installs
+install:
+  - echo "nothing needs to be installed"
+
+# Scripts to be run such as tests
+before_script:
+  - echo "no tests"
+
+script:
+  - docker --version #print the version for logging
+  - docker build . -t onurbolukbas/feed-api:v1 
+    --build-arg POSTGRES_USERNAME="$POSTGRES_USERNAME"
+    --build-arg POSTGRES_PASSWORD="$POSTGRES_PASSWORD"
+    --build-arg POSTGRES_DB="$POSTGRES_DB"
+    --build-arg POSTGRES_HOST="$POSTGRES_HOST"
+    --build-arg AWS_REGION="$AWS_REGION"
+    --build-arg AWS_PROFILE="$AWS_PROFILE"
+    --build-arg AWS_BUCKET="$AWS_BUCKET"
+    --build-arg URL="$URL"
+
+after_success:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - echo $FAVORITE_COUNTRY
+  - docker images
+  - docker push onurbolukbas/feed-api
