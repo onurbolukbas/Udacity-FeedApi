@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: feedapi
+  labels:
+    app: feedapi
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: feedapi
+  template:
+    metadata:
+      labels:
+        app: feedapi
+    spec:
+      containers:
+      - name: feed-api
+        image: onurbolukbas/feed-api:v1
+        ports:
+        - containerPort: 80
+        livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 15
