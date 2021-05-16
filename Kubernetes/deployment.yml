@@ -19,9 +19,3 @@ spec:
         image: onurbolukbas/feed-api:v1
         ports:
         - containerPort: 80
-        livenessProbe:
-            httpGet:
-              path: /health
-              port: 8080
-            initialDelaySeconds: 15
-            periodSeconds: 15
